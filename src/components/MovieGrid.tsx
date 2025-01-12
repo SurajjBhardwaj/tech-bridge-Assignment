@@ -79,19 +79,12 @@ export default function MovieGrid() {
   }, [inView, hasMore, loadMoreMovies]);
 
   const handleFilterChange = (name: string, value: string) => {
-    console.log(name, value);
     setFilters((prev: Filters) => ({ ...prev, [name]: value }));
   };
 
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
   }
-
-  useEffect(() => {
-    
-    console.log("query", query); 
-    console.log("filters", filters); 
-  }, [query, filters]);
 
   return (
     <div className="space-y-8">
@@ -102,10 +95,11 @@ export default function MovieGrid() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all-years">All Years</SelectItem>
-            {/* Add year options */}
-            <SelectItem value="2023">2023</SelectItem>
-            <SelectItem value="2022">2022</SelectItem>
-            <SelectItem value="2021">2021</SelectItem>
+            {Array.from({ length: 36 }, (_, i) => 1990 + i).map((year) => (
+              <SelectItem key={year} value={year.toString()}>
+                {year}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         <Select onValueChange={(value) => handleFilterChange("rating", value)}>
@@ -114,7 +108,6 @@ export default function MovieGrid() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all-ratings">All Ratings</SelectItem>
-            {/* Add rating options */}
             <SelectItem value="G">G</SelectItem>
             <SelectItem value="PG">PG</SelectItem>
             <SelectItem value="PG-13">PG-13</SelectItem>
@@ -122,12 +115,24 @@ export default function MovieGrid() {
           </SelectContent>
         </Select>
       </div>
+      {loading && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <div
+              key={index}
+              className="w-full h-64 bg-gray-300 rounded-lg animate-pulse"
+            ></div>
+          ))}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+        {movies.length > 0 ? (
+          movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+        ) : (
+          <div className="text-center text-gray-700">No movies found.</div>
+        )}
       </div>
-      {loading && <div className="text-center">Loading...</div>}
       {!loading && hasMore && (
         <div ref={ref} className="text-center">
           <Button onClick={loadMoreMovies}>Load More</Button>
