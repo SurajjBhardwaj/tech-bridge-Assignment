@@ -67,6 +67,7 @@ export default function MovieGrid() {
       }
     } catch (err) {
       setError("Failed to load movies. Please try again.");
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -127,11 +128,11 @@ export default function MovieGrid() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {movies.length > 0 ? (
-          movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
-        ) : (
-          !loading && <div className="text-center text-gray-700">No movies found.</div>
-        )}
+        {movies.length > 0
+          ? movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+          : !loading && (
+              <div className="text-center text-gray-700">No movies found.</div>
+            )}
       </div>
       {!loading && hasMore && (
         <div ref={ref} className="text-center">
