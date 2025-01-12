@@ -22,6 +22,7 @@ export default function MovieGrid() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [year, setYear] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const { cachedMovies, setCachedMovies, filters, setFilters } =
     useMovieContext();
@@ -34,30 +35,43 @@ export default function MovieGrid() {
     setMovies([]);
     setPage(1);
     setHasMore(true);
-  }, [query, filters]);
+  }, [query]);
 
   const loadMoreMovies = useCallback(async () => {
     if (loading) return;
     setLoading(true);
     setError(null);
 
+    console.log("loading more movies");
+
     try {
       let newMovies: Movie[];
-      if (cachedMovies[query] && page === 1) {
+      if (cachedMovies[query] && page === 1 && filters.year === " ") {
         newMovies = cachedMovies[query];
+        console.log("using cached movies");
       } else {
-        newMovies = await searchMovies(query, page);
-        if (page === 1) {
+        newMovies = await searchMovies(
+          query,
+          page,
+          year && year !== " " ? year : undefined
+        );
+        console.log("fetching new movies");
+        if (page === 1 && year === " ") {
           setCachedMovies(query, newMovies);
         }
       }
 
+      console.log("newMovies", newMovies);
+
       // Apply filters
-      newMovies = newMovies.filter((movie) => {
-        if (filters.year && movie.year !== filters.year) return false;
-        // Add more filter conditions as needed
-        return true;
-      });
+      // newMovies = newMovies.filter((movie) => {
+      //   if (filters.year && movie.year != filters.year) return false;
+      //   // Add more filter conditions as needed
+      //   console.log("working");
+      //   return true;
+      // });
+
+      console.log("newMovies", newMovies);
 
       if (newMovies.length === 0) {
         setHasMore(false);
@@ -71,16 +85,31 @@ export default function MovieGrid() {
     } finally {
       setLoading(false);
     }
-  }, [loading, query, page, cachedMovies, setCachedMovies, filters]);
+  }, [loading, query, page, cachedMovies, setCachedMovies, year]);
 
   useEffect(() => {
     if (inView && hasMore) {
       loadMoreMovies();
     }
-  }, [inView, hasMore, loadMoreMovies]);
+  }, [inView, hasMore, loadMoreMovies, year]);
+
+  useEffect(() => {
+    if (year) {
+      loadMoreMovies();
+    }
+  }, [year]);
 
   const handleFilterChange = (name: string, value: string) => {
+    setYear(value);
     setFilters((prev: Filters) => ({ ...prev, [name]: value }));
+
+    if (name === "year" && value === " ") {
+      console.log("clearing cache");
+      setYear(" ");
+      setMovies([]);
+      setPage(1);
+      setHasMore(true);
+    }
   };
 
   if (error) {
@@ -95,8 +124,8 @@ export default function MovieGrid() {
             <SelectValue placeholder="Select Year" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all-years">All Years</SelectItem>
-            {Array.from({ length: 35 }, (_, i) => 2023 - i).map((year) => (
+            <SelectItem value=" ">All Years</SelectItem>
+            {Array.from({ length: 35 }, (_, i) => 2024 - i).map((year) => (
               <SelectItem key={year} value={year.toString()}>
                 {year}
               </SelectItem>
@@ -108,7 +137,7 @@ export default function MovieGrid() {
             <SelectValue placeholder="Select Rating" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all-ratings">All Ratings</SelectItem>
+            <SelectItem value=" ">All Ratings</SelectItem>
             <SelectItem value="G">G</SelectItem>
             <SelectItem value="PG">PG</SelectItem>
             <SelectItem value="PG-13">PG-13</SelectItem>

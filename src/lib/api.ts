@@ -1,6 +1,10 @@
 const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
 const API_URL = "https://www.omdbapi.com/";
 
+if (!API_KEY) {
+  throw new Error("NEXT_PUBLIC_OMDB_API_KEY is not defined");
+}
+
 export interface Movie {
   id: string;
   title: string;
@@ -13,11 +17,13 @@ export interface Movie {
 
 export async function searchMovies(
   query: string,
-  page: number
+  page: number,
+  year?: string
 ): Promise<Movie[]> {
-  const response = await fetch(
-    `${API_URL}?apikey=${API_KEY}&s=${encodeURIComponent(query)}&page=${page}`
-  );
+  const yearParam = year ? `&y=${Number(year)}` : "";
+  const url = `${API_URL}?apikey=${API_KEY}&s=${query}&page=${page}${yearParam}`;
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error("Failed to fetch movies");
@@ -33,7 +39,7 @@ export async function searchMovies(
     id: movie.imdbID,
     title: movie.Title,
     year: movie.Year,
-    poster: movie.Poster,
+    poster: movie.Poster !== "N/A" ? movie.Poster : "/default-poster.jpg",
   }));
 }
 
@@ -41,9 +47,10 @@ export async function searchFirstTime(
   year: string | number,
   page: number = 1
 ): Promise<Movie[]> {
-  const response = await fetch(
-    `${API_URL}?apikey=${API_KEY}&y=${year}&page=${page}`
-  );
+  const url = `${API_URL}?apikey=${API_KEY}&y=${year}&page=${page}`;
+
+  const response = await fetch(url);
+
   if (!response.ok) {
     throw new Error("Failed to fetch movies");
   }
@@ -58,7 +65,7 @@ export async function searchFirstTime(
     id: movie.imdbID,
     title: movie.Title,
     year: movie.Year,
-    poster: movie.Poster,
+    poster: movie.Poster !== "N/A" ? movie.Poster : "/default-poster.jpg",
   }));
 }
 
@@ -67,11 +74,9 @@ export async function searchMoviesWithFilter(
   page: number,
   filter: { year: string; rating: string }
 ): Promise<Movie[]> {
-  const response = await fetch(
-    `${API_URL}?apikey=${API_KEY}&s=${encodeURIComponent(query)}&y=${
-      filter.year
-    }&page=${page}`
-  );
+  const url = `${API_URL}?apikey=${API_KEY}&s=${query}&y=${filter.year}&page=${page}`;
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error("Failed to fetch movies");
@@ -87,12 +92,14 @@ export async function searchMoviesWithFilter(
     id: movie.imdbID,
     title: movie.Title,
     year: movie.Year,
-    poster: movie.Poster,
+    poster: movie.Poster !== "N/A" ? movie.Poster : "/default-poster.jpg",
   }));
 }
 
 export async function getMovieDetails(id: string): Promise<Movie | null> {
-  const response = await fetch(`${API_URL}?apikey=${API_KEY}&i=${id}`);
+  const url = `${API_URL}?apikey=${API_KEY}&i=${id}`;
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error("Failed to fetch movie details");
@@ -108,7 +115,7 @@ export async function getMovieDetails(id: string): Promise<Movie | null> {
     id: data.imdbID,
     title: data.Title,
     year: data.Year,
-    poster: data.Poster,
+    poster: data.Poster !== "N/A" ? data.Poster : "/default-poster.jpg",
     plot: data.Plot,
     cast: data.Actors.split(", "),
     director: data.Director,
