@@ -46,7 +46,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
           </Button>
         </div>
         <div className="p-4">
-          <h2 className="text-lg font-semibold mb-2">{movie.title}</h2>
+          <h2 className="text-lg text-black font-semibold mb-2">{movie.title}</h2>
           <p className="text-sm text-gray-600">{movie.year}</p>
         </div>
       </div>

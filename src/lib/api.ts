@@ -37,6 +37,31 @@ export async function searchMovies(
   }));
 }
 
+export async function searchFirstTime(
+  year: string | number,
+  page: number = 1
+): Promise<Movie[]> {
+  const response = await fetch(
+    `${API_URL}?apikey=${API_KEY}&y=${year}&page=${page}`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch movies");
+  }
+
+  const data = await response.json();
+
+  if (data.Response === "False") {
+    return [];
+  }
+
+  return data.Search.map((movie: any) => ({
+    id: movie.imdbID,
+    title: movie.Title,
+    year: movie.Year,
+    poster: movie.Poster,
+  }));
+}
+
 export async function searchMoviesWithFilter(
   query: string,
   page: number,

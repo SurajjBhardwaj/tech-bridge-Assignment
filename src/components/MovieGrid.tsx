@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import MovieCard from "@/components/MovieCard";
 import { Button } from "@/components/ui/button";
 import { useInView } from "react-intersection-observer";
-import { searchMovies, Movie } from "@/lib/api";
+import { searchMovies, Movie, searchMoviesWithFilter } from "@/lib/api";
 import { useMovieContext } from "@/contexts/MovieContext";
 import {
   Select,
@@ -94,15 +94,15 @@ export default function MovieGrid() {
             <SelectValue placeholder="Select Year" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all-years">All Years</SelectItem>
-            {Array.from({ length: 36 }, (_, i) => 1990 + i).map((year) => (
+            <SelectItem value="2024">2024</SelectItem>
+            {Array.from({ length: 35 }, (_, i) => 2023 - i).map((year) => (
               <SelectItem key={year} value={year.toString()}>
                 {year}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
-        <Select onValueChange={(value) => handleFilterChange("rating", value)}>
+        {/* <Select onValueChange={(value) => handleFilterChange("rating", value)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select Rating" />
           </SelectTrigger>
@@ -113,7 +113,7 @@ export default function MovieGrid() {
             <SelectItem value="PG-13">PG-13</SelectItem>
             <SelectItem value="R">R</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
       </div>
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
