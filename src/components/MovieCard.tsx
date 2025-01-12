@@ -6,6 +6,7 @@ import { Movie } from "@/lib/api";
 import { useMovieContext } from "@/contexts/MovieContext";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
+import { toast } from "sonner";
 
 interface MovieCardProps {
   movie: Movie;
@@ -19,8 +20,10 @@ export default function MovieCard({ movie }: MovieCardProps) {
     e.preventDefault();
     if (favorite) {
       removeFavorite(movie.id);
+      toast.success("Removed from favorites");
     } else {
       addFavorite(movie);
+      toast.success("Added to favorites");
     }
   };
 
@@ -46,7 +49,9 @@ export default function MovieCard({ movie }: MovieCardProps) {
           </Button>
         </div>
         <div className="p-4">
-          <h2 className="text-lg text-black font-semibold mb-2">{movie.title}</h2>
+          <h2 className="text-lg text-black font-semibold mb-2">
+            {movie.title}
+          </h2>
           <p className="text-sm text-gray-600">{movie.year}</p>
         </div>
       </div>

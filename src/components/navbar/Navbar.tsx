@@ -19,9 +19,10 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full flex justify-between items-center p-4 bg-gray-800 text-white transition-all duration-300 ${
-        isScrolled ? "bg-opacity-90 shadow-lg" : "bg-opacity-100"
-      }`}
+      className={`fixed top-0 left-0 w-full flex justify-between items-center p-4 bg-gray-800 text-white transition-all duration-300 z-50 ${
+        isScrolled ? "bg-opacity-90 shadow-lg backdrop-blur-md" : "bg-opacity-100"
+      } mb-8`}
+      style={{ zIndex: 1000 }}
     >
       <Link href="/" className="text-3xl font-bold">
         Movie Search

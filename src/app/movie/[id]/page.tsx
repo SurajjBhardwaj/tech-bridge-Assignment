@@ -28,7 +28,7 @@ export default function MovieDetailPage({
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-200">
+      <div className="flex justify-center items-center h-auto bg-gray-200">
         <div className="w-full flex flex-col md:flex-row gap-8 p-4 bg-gray-100 rounded-lg shadow-lg">
           <div className="w-full md:w-1/3">
             <div className="w-full h-[450px] bg-gray-300 rounded-lg animate-pulse"></div>
@@ -37,6 +37,10 @@ export default function MovieDetailPage({
             <div className="h-10 bg-gray-300 rounded-lg animate-pulse"></div>
             <div className="h-6 bg-gray-300 rounded-lg animate-pulse"></div>
             <div className="h-24 bg-gray-300 rounded-lg animate-pulse"></div>
+            <div className="h-8 bg-gray-300 rounded-lg animate-pulse"></div>
+            <div className="h-6 bg-gray-300 rounded-lg animate-pulse"></div>
+            <div className="h-8 bg-gray-300 rounded-lg animate-pulse"></div>
+            <div className="h-6 bg-gray-300 rounded-lg animate-pulse"></div>
             <div className="h-8 bg-gray-300 rounded-lg animate-pulse"></div>
             <div className="h-6 bg-gray-300 rounded-lg animate-pulse"></div>
             <div className="h-8 bg-gray-300 rounded-lg animate-pulse"></div>
@@ -56,8 +60,8 @@ export default function MovieDetailPage({
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-200">
-      <div className="w-full  flex flex-col md:flex-row gap-8 p-4 bg-gray-100 rounded-lg shadow-lg">
+    <div className="flex justify-center items-center h-auto bg-gray-200 rounded-xl">
+      <div className="w-auto h-auto flex flex-col md:flex-row gap-8 p-6 bg-white rounded-lg shadow-lg">
         <div className="w-full md:w-1/3">
           <Image
             src={movie.poster || "/placeholder.png"}

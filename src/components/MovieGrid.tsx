@@ -94,7 +94,7 @@ export default function MovieGrid() {
             <SelectValue placeholder="Select Year" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="2024">2024</SelectItem>
+            <SelectItem value="all-years">All Years</SelectItem>
             {Array.from({ length: 35 }, (_, i) => 2023 - i).map((year) => (
               <SelectItem key={year} value={year.toString()}>
                 {year}
@@ -102,7 +102,7 @@ export default function MovieGrid() {
             ))}
           </SelectContent>
         </Select>
-        {/* <Select onValueChange={(value) => handleFilterChange("rating", value)}>
+        <Select onValueChange={(value) => handleFilterChange("rating", value)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select Rating" />
           </SelectTrigger>
@@ -113,7 +113,7 @@ export default function MovieGrid() {
             <SelectItem value="PG-13">PG-13</SelectItem>
             <SelectItem value="R">R</SelectItem>
           </SelectContent>
-        </Select> */}
+        </Select>
       </div>
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -130,7 +130,7 @@ export default function MovieGrid() {
         {movies.length > 0 ? (
           movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
         ) : (
-          <div className="text-center text-gray-700">No movies found.</div>
+          !loading && <div className="text-center text-gray-700">No movies found.</div>
         )}
       </div>
       {!loading && hasMore && (
