@@ -52,11 +52,15 @@ The application uses the OMDB API to search for movies based on the user's query
 
 ### Filtering
 
-Users can filter the search results by year and rating (rating is not woring right now, since OMDB APi was haivng no any option to pass rating as query parameter). The filters are implemented using the `Select` component from the `@/components/ui/select` module. When a filter is applied, the `handleFilterChange` function updates the state and triggers a new search with the selected filters.
+Users can filter the search results by year and rating (rating is not working right now, since OMDB API does not have an option to pass rating as a query parameter). The filters are implemented using the `Select` component from the `@/components/ui/select` module. When a filter is applied, the `handleFilterChange` function updates the state and triggers a new search with the selected filters.
 
 ### Optimization
 
-The application uses the `useInView` hook from the `react-intersection-observer` library to implement infinite scrolling. When the user scrolls to the bottom of the page, the `loadMoreMovies` function is called to fetch more movies.
+The application uses the `useInView` hook from the `react-intersection-observer` library to implement `infinite scrolling`. When the user scrolls to the bottom of the page, the `loadMoreMovies` function is called to fetch more movies.
+
+### Debouncing
+
+To optimize the search functionality, the application implements debouncing. This ensures that the API is not called too frequently when the user is typing a query. The search function is only triggered after the user has stopped typing for a specified amount of time.
 
 ### Caching
 
@@ -76,6 +80,5 @@ The application uses the following API functions from the `@/lib/api` module:
 - `searchMovies(query: string, page: number, year?: string): Promise<Movie[]>`: Searches for movies based on the query, page number, and optional year filter.
 - `searchMoviesWithFilter(query: string, page: number, filter: { year: string; rating: string }): Promise<Movie[]>`: Searches for movies based on the query, page number, and filter object.
 - `getMovieDetails(id: string): Promise<Movie | null>`: Fetches detailed information about a movie by its ID.
-
 
 ## Thanks ❤️
