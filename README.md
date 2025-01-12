@@ -66,6 +66,14 @@ To optimize the search functionality, the application implements debouncing. Thi
 
 The application caches search results to reduce the number of API calls and improve performance. The `useMovieContext` hook provides access to the cached movies. When a search query is repeated, the application first checks the cache before making a new API call.
 
+### Responsiveness
+
+The application is fully responsive and works seamlessly on both phone and desktop devices. The layout adjusts automatically to provide an optimal viewing experience across different screen sizes.
+
+### Favorites
+
+Users can mark movies as favorites. The favorite movies are stored in `localStorage`, allowing users to add or remove favorites. The favorite status is displayed on each movie card, and users can toggle the favorite status by clicking a button.
+
 ## Project Structure
 
 - `src/components`: Contains the React components used in the application.

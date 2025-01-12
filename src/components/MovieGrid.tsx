@@ -42,36 +42,36 @@ export default function MovieGrid() {
     setLoading(true);
     setError(null);
 
-    console.log("loading more movies");
+    // console.log("loading more movies");
 
     try {
       let newMovies: Movie[];
       if (cachedMovies[query] && page === 1 && filters.year === " ") {
         newMovies = cachedMovies[query];
-        console.log("using cached movies");
+        // console.log("using cached movies");
       } else {
         newMovies = await searchMovies(
           query,
           page,
           year && year !== " " ? year : undefined
         );
-        console.log("fetching new movies");
+        // console.log("fetching new movies");
         if (page === 1 && year === " ") {
           setCachedMovies(query, newMovies);
         }
       }
 
-      console.log("newMovies", newMovies);
+      // console.log("newMovies", newMovies);
 
       // Apply filters
       // newMovies = newMovies.filter((movie) => {
       //   if (filters.year && movie.year != filters.year) return false;
       //   // Add more filter conditions as needed
-      //   console.log("working");
+      //   // console.log("working");
       //   return true;
       // });
 
-      console.log("newMovies", newMovies);
+      // console.log("newMovies", newMovies);
 
       if (newMovies.length === 0) {
         setHasMore(false);
@@ -104,7 +104,7 @@ export default function MovieGrid() {
     setFilters((prev: Filters) => ({ ...prev, [name]: value }));
 
     if (name === "year" && value === " ") {
-      console.log("clearing cache");
+      // console.log("clearing cache");
       setYear(" ");
       setMovies([]);
       setPage(1);
